@@ -5,3 +5,6 @@ services:
     build: ./web
     ports:
       - 80:80
+    volumes:
+      - ./web:/home/workspace
+    tty: true
