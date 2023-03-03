@@ -36,3 +36,9 @@ npx hardhat run scripts/deploy.js --network goerli
 npx hardhat run scripts/deploy.js --network localhost
 
 ```
+##set param  hardhat.config.js 
+YOUR_ALCHEMY_API_URL 
+https://dashboard.alchemy.com/ のAPP > View Key > httpsの値
+
+YOUR_PRIVATE_GOERLI_ACCOUNT_KEY 自分自信の秘密鍵
+
