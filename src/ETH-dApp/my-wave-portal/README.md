@@ -11,3 +11,28 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
+
+## sample Project start
+```
+npx hardhat
+npm install --save-dev @nomicfoundation/hardhat-toolbox
+```
+
+## run 
+```
+cd projectRoot/ETH-dApp/my-wave-portal
+npx hardhat run scripts/run.js
+```
+
+
+## deploy 
+```
+cd projectRoot/ETH-dApp/my-wave-portal
+
+## goerli へのデプロイ
+npx hardhat run scripts/deploy.js --network goerli
+
+## local へのデプロイ
+npx hardhat run scripts/deploy.js --network localhost
+
+```
