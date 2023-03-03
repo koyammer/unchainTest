@@ -28,6 +28,7 @@ npx hardhat run scripts/run.js
 ## deploy 
 ```
 cd projectRoot/ETH-dApp/my-wave-portal
+npx hardhat node
 
 ## goerli へのデプロイ
 npx hardhat run scripts/deploy.js --network goerli
