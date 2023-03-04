@@ -26,7 +26,7 @@ const App = () => {
   * Contract deployed to: wavePortal.addres
   * https://github.com/koyammer/unchainTest/blob/main/src/ETH-dApp/my-wave-portal/scripts/deploy.js#L10
   */
-  const contractAddress = "0xD8471BAac22b64a9BC4a1d29dA77C1130a7465DC";
+  const contractAddress = "0x6B5D29318841dA38b753dD3BE42Be2c7b8fe1160";
 
   const getAllWaves = async () => {
     const { ethereum } = window;
