@@ -3,10 +3,14 @@ pragma solidity ^0.8.17;
 import "hardhat/console.sol";
 contract WavePortal {
     uint256 totalWaves;
+
+    /* 乱数生成のための基盤となるシード（種）を作成 */
+    uint256 private seed;
+
     /*
     * NewWaveイベントの作成
     */
-    event NewWave(address indexed from, uint256 timestamp, string message);
+    event NewWave(address indexed from, uint256 timestamp, string message, bool isPrize);
     /*
     * Waveという構造体を作成。
     * 構造体の中身は、カスタマイズすることができます。
@@ -14,7 +18,8 @@ contract WavePortal {
     struct Wave {
         address waver; //「👋（wave）」を送ったユーザーのアドレス
         string message; // ユーザーが送ったメッセージ
-        uint256 timestamp; // ユーザーが「👋（wave）」を送った瞬間のタイムスタンプ
+        bool isPrize; // prize対象になったかどうか
+        uint256 timestamp; // ユーザーが「👋（wave）」を送った瞬間のタイムスタンプ        
     }
     /*
     * 構造体の配列を格納するための変数wavesを宣言。
@@ -23,6 +28,8 @@ contract WavePortal {
     Wave[] waves;
     constructor() payable {
         console.log("WavePortal - Smart Contract!");
+        //初期シードを設定
+        seed = (block.timestamp + block.difficulty) % 100;        
     }
 
     /*
@@ -31,30 +38,46 @@ contract WavePortal {
     */
     function wave(string memory _message) public {
 
-        msg.sender;    
-
         totalWaves += 1;
-        console.log("%s waved w/ message %s", msg.sender, _message);
-        /*
-         * 「👋（wave）」とメッセージを配列に格納。
-         */
-        waves.push(Wave(msg.sender, _message, block.timestamp));
-        /*
-         * コントラクト側でemitされたイベントに関する通知をフロントエンドで取得できるようにする。
-         */
-        emit NewWave(msg.sender, block.timestamp, _message);
+        bool isPrize = false ;
 
-        // /*
-        // * 「👋（wave）」を送ってくれたユーザーに0.0001ETHを送る
-        // */
-        uint256 prizeAmount = 0.0001 ether;
-        require(
-            prizeAmount <= address(this).balance,
-            "Trying to withdraw more money than the contract has."
-        );
-        (bool success, ) = (msg.sender).call{value: prizeAmount}("");
-        require(success, "Failed to withdraw money from contract.");
+
+        /*
+         * ユーザーがETHを獲得する確率を50％に設定
+         */
+        if (getSeed() <= 50 ) {
+            
+            // 「👋（wave）」を送ってくれたユーザーに0g.0001ETHを送る
+            uint256 prizeAmount = 0.0001 ether;
+            require(
+                prizeAmount <= address(this).balance,
+                "Trying to withdraw more money than the contract has."
+            );
+            (bool success, ) = (msg.sender).call{value: prizeAmount}("");
+            require(success, "Failed to withdraw money from contract.");
+
+            isPrize = true ;
+        } else {
+              console.log("%s did not win.", msg.sender);
+        }
+
+         //👋（wave）」とメッセージを配列に格納。
+        waves.push(Wave(msg.sender, _message, isPrize, block.timestamp));
+
+        //コントラクト側でemitされたイベントに関する通知をフロントエンドで取得できるようにする。
+        emit NewWave(msg.sender, block.timestamp, _message,isPrize);
+
     }
+    /*
+    * 乱数取得
+    */
+    function getSeed () public view returns (uint256) {
+       return (block.difficulty + block.timestamp + seed) % 100;
+    
+    }
+
+
+
     /*
      * 構造体配列のwavesを返してくれるgetAllWavesという関数を追加。
      * これで、私たちのWEBアプリからwavesを取得することができます。
@@ -64,7 +87,6 @@ contract WavePortal {
     }
     function getTotalWaves() public view returns (uint256) {
         // コントラクトが出力する値をコンソールログで表示する。
-        console.log("We have %d total waves!", totalWaves);
         return totalWaves;
     }
 }
