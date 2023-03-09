@@ -27,9 +27,15 @@ const main = async () => {
     let waveCount;
     waveCount = await waveContract.getTotalWaves();
   
-    let waveMessage = "wave test b";
-    let waveTxn = await waveContract.wave(waveMessage);
+    /*
+    * 2回 waves を送るシミュレーションを行う
+    */
+    const waveTxn = await waveContract.wave("This is wave #1");
     await waveTxn.wait();
+
+    const waveTxn2 = await waveContract.connect(randomPerson1).wave("This is wave #2");
+    await waveTxn2.wait();
+
   
     /*
     * Waveした後のコントラクトの残高を取得し、結果を出力（0.0001ETH引かれていることを確認）
