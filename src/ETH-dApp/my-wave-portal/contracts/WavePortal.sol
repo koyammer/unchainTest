@@ -8,6 +8,11 @@ contract WavePortal {
     uint256 private seed;
 
     /*
+     * "address => uint mapping"は、アドレスと数値を関連付ける
+     */
+    mapping(address => uint256) public lastWavedAt;
+
+    /*
     * NewWaveイベントの作成
     */
     event NewWave(address indexed from, uint256 timestamp, string message, bool isPrize);
@@ -41,6 +46,18 @@ contract WavePortal {
         totalWaves += 1;
         bool isPrize = false ;
 
+        /*
+         * 現在ユーザーがwaveを送信している時刻と、前回waveを送信した時刻が15分以上離れていることを確認。
+         */
+        require(
+            lastWavedAt[msg.sender] + 15 minutes < block.timestamp,
+            "Wait 15m"
+        );
+                /*
+         * ユーザーの現在のタイムスタンプを更新する
+         */
+        lastWavedAt[msg.sender] = block.timestamp;
+
 
         /*
          * ユーザーがETHを獲得する確率を50％に設定
@@ -71,12 +88,11 @@ contract WavePortal {
     /*
     * 乱数取得
     */
-    function getSeed () public view returns (uint256) {
-       return (block.difficulty + block.timestamp + seed) % 100;
-    
+    function getSeed () private view returns (uint256) {
+        uint256 tempSeed = (block.difficulty + block.timestamp + seed) % 100;
+        console.log("Random # generated: %d", tempSeed);
+        return tempSeed;
     }
-
-
 
     /*
      * 構造体配列のwavesを返してくれるgetAllWavesという関数を追加。

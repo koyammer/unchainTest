@@ -26,7 +26,7 @@ const App = () => {
   * Contract deployed to: wavePortal.addres
   * https://github.com/koyammer/unchainTest/blob/main/src/ETH-dApp/my-wave-portal/scripts/deploy.js#L10
   */
-  const contractAddress = "0x6B5D29318841dA38b753dD3BE42Be2c7b8fe1160";
+  const contractAddress = "0x9f55b4123d7B6bC890Fa02441cfAF02Dfcd26e89";
 
   const getAllWaves = async () => {
     const { ethereum } = window;
@@ -40,6 +40,10 @@ const App = () => {
           contractABI,
           signer
         );
+
+        let contractBalance = await provider.getBalance(wavePortalContract.address);
+        console.log("Contract balance:", ethers.utils.formatEther(contractBalance));
+
         /* コントラクトからgetAllWavesメソッドを呼び出す */
         const waves = await wavePortalContract.getAllWaves();
         /* UIに必要なのは、アドレス、タイムスタンプ、メッセージだけなので、以下のように設定 */
@@ -48,6 +52,7 @@ const App = () => {
             address: wave.waver,
             timestamp: new Date(wave.timestamp * 1000),
             message: wave.message,
+            isPrize : wave.isPrize,
           };
         });
 
@@ -67,14 +72,15 @@ const App = () => {
   useEffect(() => {
     let wavePortalContract;
 
-    const onNewWave = (from, timestamp, message) => {
-      console.log("NewWave", from, timestamp, message);
+    const onNewWave = (from, timestamp, message,isPrize) => {
+      console.log("NewWave", from, timestamp, message,isPrize);
       setAllWaves((prevState) => [
         ...prevState,
         {
           address: from,
           timestamp: new Date(timestamp * 1000),
           message: message,
+          isPrize: isPrize,
         },
       ]);
     };
@@ -166,6 +172,23 @@ const App = () => {
         console.log("Mined -- ", waveTxn.hash);
         count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
+
+        // let contractBalance_post = await provider.getBalance(
+        //   wavePortalContract.address
+        // );
+        // /* コントラクトの残高が減っていることを確認 */
+        // if (contractBalance_post.lt(contractBalance)) {
+        //   /* 減っていたら下記を出力 */
+        //   console.log("User won ETH!");
+        // } else {
+        //   console.log("User didn't win ETH.");
+        // }
+        // console.log(
+        //   "Contract balance after wave:",
+        //   ethers.utils.formatEther(contractBalance_post)
+        // );
+
+
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -241,6 +264,7 @@ const App = () => {
                   <div>Address: {wave.address}</div>
                   <div>Time: {wave.timestamp.toString()}</div>
                   <div>Message: {wave.message}</div>
+                  <div>isPrize: {wave.isPrize.toString()}</div>
                 </div>
               );
             })}

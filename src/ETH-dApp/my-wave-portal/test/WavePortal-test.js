@@ -45,14 +45,7 @@ describe("WavePortal", function () {
     expect(randomPerson.address).to.equal(waves[0].waver);  
     expect(waveMessage).to.equal(waves[0].message);  
 
-    /*
-      * wave関数の実行後のコントラクトの残高を取得し、結果を出力（0.009ETHであることを確認）
-      */
-    let endBalance = await hre.ethers.provider.getBalance(
-        waveContract.address
-    );
-    let confirmEndErher = "0.0999";
-    expect(confirmEndErher).to.equal(hre.ethers.utils.formatEther(endBalance));  
+    //TODO getSeedをmock化してプライズを付与した時としてない時のテストをした方が良い
 
     /*
       *TotalWaves数が1である事を確認
