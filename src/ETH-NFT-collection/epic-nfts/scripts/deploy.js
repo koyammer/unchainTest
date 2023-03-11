@@ -7,21 +7,25 @@
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
+  // コントラクトを扱うために必要なファイルが `artifacts` ディレクトリの直下に生成されます。
+  const nftContractFactory = await hre.ethers.getContractFactory("MyEpicNFT");
+  // Hardhat がローカルの Ethereum ネットワークを作成します。
+  const nftContract = await nftContractFactory.deploy();
+  // コントラクトが Mint され、ローカルのブロックチェーンにデプロイされるまで待ちます。
+  await nftContract.deployed();
+  console.log("Contract deployed to:", nftContract.address);
+  // makeAnEpicNFT 関数を呼び出す。NFT が Mint される。
+  let txn = await nftContract.makeAnEpicNFT();
+  // Minting が仮想マイナーにより、承認されるのを待ちます。
+  await txn.wait();
+  console.log("Minted NFT #1");
+  // makeAnEpicNFT 関数をもう一度呼び出します。NFT がまた Mint されます。
+  txn = await nftContract.makeAnEpicNFT();
+  // Minting が仮想マイナーにより、承認されるのを待ちます。
+  await txn.wait();
+  console.log("Minted NFT #2");
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
