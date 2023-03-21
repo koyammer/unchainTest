@@ -42,3 +42,9 @@ https://dashboard.alchemy.com/ のAPP > View Key > httpsの値
 
 YOUR_PRIVATE_GOERLI_ACCOUNT_KEY 自分自信の秘密鍵
 
+
+```
+##ネットワーク をverifyして、公開する
+npx hardhat clean
+npx hardhat verify YOUR_CONTRACT_ADDRESS --network goerli
+```

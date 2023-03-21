@@ -23,6 +23,8 @@ contract MyEpicNFT is ERC721URIStorage {
     // _tokenIdsを初期化（_tokenIds = 0）
     Counters.Counter private _tokenIds;
 
+    uint256 saleLimit = 10;
+
     // SVGコードを作成します。
     // 変更されるのは、表示される単語だけです。
     // すべてのNFTにSVGコードを適用するために、baseSvg変数を作成します。
@@ -33,7 +35,7 @@ contract MyEpicNFT is ERC721URIStorage {
     string[] secondWords = ["GGG", "HHH", "III", "JJJ", "KKK", "LLL"];
     string[] thirdWords = ["MMM", "NNN", "OOO", "PPP", "QQQ", "RRR"];
 
-
+    event NewEpicNFTMinted(address sender, uint256 tokenId);
 
     // NFT トークンの名前とそのシンボルを渡します。
     constructor() ERC721 ("SquareNFT", "SQUARE") {
@@ -87,6 +89,14 @@ contract MyEpicNFT is ERC721URIStorage {
         // 現在のtokenIdを取得します。tokenIdは0から始まります。
         uint256 newItemId = _tokenIds.current();
 
+        /*
+         * 現在ユーザーがwaveを送信している時刻と、前回waveを送信した時刻が15分以上離れていることを確認。
+         */
+        require(
+            newItemId < getSaleLimit(),
+            "sale limit"
+        );
+        
         // 3つの配列からそれぞれ1つの単語をランダムに取り出します。
         string memory first = pickRandomFirstWord(newItemId);
         string memory second = pickRandomSecondWord(newItemId);
@@ -143,5 +153,15 @@ contract MyEpicNFT is ERC721URIStorage {
 
         // 次の NFT が Mint されるときのカウンターをインクリメントする。
         _tokenIds.increment();
+
+        emit NewEpicNFTMinted(msg.sender, newItemId);
+    }
+
+    function totalSupply() public view returns (uint256){
+        return _tokenIds.current();
+    }
+    
+    function getSaleLimit() public view returns (uint256){
+         return saleLimit;
     }
 }

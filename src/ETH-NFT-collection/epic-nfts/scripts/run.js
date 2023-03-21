@@ -14,8 +14,36 @@ const main = async () => {
     await txn.wait();
     // makeAnEpicNFT 関数をもう一度呼び出す。NFT がまた Mint される。
     txn = await nftContract.makeAnEpicNFT();
-    // Minting が仮想マイナーにより、承認されるのを待つ。
     await txn.wait();
+
+
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+    txn = await nftContract.makeAnEpicNFT();
+    await txn.wait();
+
+    try{
+        txn = await nftContract.makeAnEpicNFT();
+        await txn.wait();    
+    }catch(error){
+        console.log("----count_limit ----- : ");
+    }
+
+    var total  = await nftContract.totalSupply();
+    console.log("----total----count : " + total);
+
 
 
     nftContract.makeAn
