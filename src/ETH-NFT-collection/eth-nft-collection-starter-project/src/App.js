@@ -18,7 +18,7 @@ import myEpicNft from "./utils/MyEpicNFT.json";
 // Constantsを宣言する: constとは値書き換えを禁止した変数を宣言する方法です。
 const TWITTER_HANDLE = "rudolf134";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
-const OPENSEA_LINK = 'https://testnets.opensea.io/assets/goerli/';
+const OPENSEA_LINK = 'https://testnets.opensea.io/assets/goerli';
 //const TOTAL_MINT_COUNT = 5;
 
 // コントラクトアドレスをCONTRACT_ADDRESS変数に格納
