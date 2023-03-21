@@ -208,14 +208,27 @@ const App = () => {
           provider
         );
 
-        let totalSupply = await connectedContract.totalSupply();
-        let saleLimit = await connectedContract.getSaleLimit();
+        let totalSupplyTemp = await connectedContract.totalSupply();
+        let saleLimitTemp = await connectedContract.getSaleLimit();
+
+        let totalSupply = Number(totalSupplyTemp);
+        let saleLimit =  Number(saleLimitTemp)
+
 
         setTotalSupply(totalSupply);
         setSaleLimit(saleLimit);
 
+        console.log( typeof totalSupply );
+        console.log( typeof saleLimit );
+
+        console.log("totalSupply:::::" + totalSupply);
+        console.log("saleLimit:::::" + saleLimit);
+
         if (totalSupply >= saleLimit) {
+          console.log("setSoldOut:::::" );
           setSoldOut(true)
+        } else {
+          setSoldOut(false)
         }
 
       } else {
