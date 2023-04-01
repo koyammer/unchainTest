@@ -275,16 +275,17 @@ const Home: NextPage = () => {
 
                   console.log("------------------voteing---");
                   console.log("------------------address---"+address);
+                  console.log(typeof(address));
                   // ユーザーが自分のトークンを投票に委ねることを確認する必要があります
                   try {
                     // 投票する前にウォレットがトークンを委譲する必要があるかどうかを確認します
-                    const delegation = await token!.getDelegationOf(address);
+                    const delegation = await token!.getDelegationOf(address as string);
                     console.log("------------------delegation---"+delegation);
                     console.log("------------------delegation-AddressZero--"+AddressZero);
                     // トークンを委譲していない場合は、投票前に委譲します
                     if (delegation === AddressZero) {
                       console.log("------------------delegation-- hoge-ta -");
-                      await token!.delegateTo(address);
+                      await token!.delegateTo(address as string);
                     }
                     // 提案に対する投票を行います
                     try {
