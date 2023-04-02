@@ -9,3 +9,14 @@ services:
     volumes:
       - ./src:/home/workspace
     tty: true
+  ganache-cli:
+    build: ./ganache-cli
+    ports:
+      - 7545:7545
+    volumes:
+      - ./src:/home/workspace
+    tty: true
+    networks:
+      default:
+        aliases:
+          - local.ganache
