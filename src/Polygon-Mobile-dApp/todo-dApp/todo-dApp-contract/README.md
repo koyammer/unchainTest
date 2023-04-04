@@ -9,3 +9,7 @@ truffle compile
 
 ## migrate 
 truffle migrate
+
+
+## create flutter app
+flutter create todo_dapp_front
