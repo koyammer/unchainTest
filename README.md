@@ -1,18 +1,17 @@
 # unchainTest 
 
-```
 
-#build 
+##　build 
 docker-compose build --no-cache
 
-#up
+##　　up
 docker-compose up -d
 
-#exec 
+##　　exec 
 docker exec -it unchaintest_web_1 /bin/ash
 
 
-##最初にnpm install する
+##　　最初にnpm install する
 cd projectRoot/ETH-dApp/my-wave-portal
 npm install --save-dev
 
@@ -22,4 +21,7 @@ npm install --save dotenv
 
 ## デプロイ用のツール
 npm install @nomiclabs/hardhat-etherscan
-```
+
+
+## truffle をインスト０流
+npm install -g truffle
