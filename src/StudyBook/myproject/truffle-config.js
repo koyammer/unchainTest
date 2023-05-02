@@ -1,3 +1,4 @@
+require("dotenv").config();
 module.exports = {
   compilers: {
     solc: {
@@ -13,10 +14,11 @@ module.exports = {
   },
   networks: {
       development: {
-          host: '127.0.0.1',
-          port: 8545,
-          network_id: 15,
-          gas: 4700000
+        host: 'local.geth',
+        port: 8545,
+        network_id: 22,
+        gas: 4700000,
+        from: process.env.DEPLOY_ADDRESS,
       },
       ganache: {
           host: '127.0.0.1',

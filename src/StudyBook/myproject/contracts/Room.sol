@@ -3,11 +3,22 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Activatable.sol";
 
-contract Room is Pausable,Ownable {
+contract Room is Pausable,Ownable,Activatable {
 
     // ②
     mapping(uint256 => bool) public rewardSent;
+
+    // address public owner;
+    // constructor(address _owner) payable {
+    //     owner = _owner;
+    // }
+    constructor() payable{
+        address payable owner = payable(_msgSender());
+        _transferOwnership(owner);
+    }
+
 
     // ③
     event Deposited(
@@ -35,8 +46,7 @@ contract Room is Pausable,Ownable {
 
 
     function sendReward(uint256 _reward, address _dest, uint256 _id) external onlyOwner {
-    //function sendReward(uint256 _reward, address _dest ) external onlyOwner {
-        
+
         require(!rewardSent[_id]); // ⑨
         require(_reward > 0); // ⑩
         require(address(this).balance >= _reward); // ⑪
@@ -51,7 +61,7 @@ contract Room is Pausable,Ownable {
         emit RewardSent(_dest, _reward, _id);
     }
 
-    function refundToOwner() external onlyOwner {
+    function refundToOwner() external whenNotActive onlyOwner {
         require(address(this).balance > 0); 
 
         uint256 refundedBalance = address(this).balance;
