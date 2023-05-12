@@ -9,3 +9,31 @@ services:
     volumes:
       - ./src:/home/workspace
     tty: true
+  truffle:
+    build: ./truffle
+    ports:
+      - 81:80
+      - 3001:3000
+      - 9545:9545
+    volumes:
+      - ./src:/home/workspace
+    stdin_open: true
+    networks:
+      default:
+        aliases:
+          - local.truffle    
+  geth:
+    image: ethereum/client-go:v1.10.18
+    entrypoint: "/bin/sh"
+    ports:
+      - "30303:30303"
+      - "8545:8545"
+    stdin_open: true
+    volumes:
+      - ./geth:/geth
+    networks:
+      default:
+        aliases:
+          - local.geth
+networks:
+  default:
