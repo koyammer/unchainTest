@@ -1,0 +1,20 @@
+/.pnp
+.pnp.js
+/libs/hardhat/*
+!/libs/hardhat/contracts
+/coverage
+/build
+.DS_Store
+
+# dependencies
+/node_modules
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# sensitive
+*.pem
+.env*
